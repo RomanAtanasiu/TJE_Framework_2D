@@ -7,9 +7,7 @@
 
 Game* Game::instance = NULL;
 
-Image font;
-Image minifont;
-Image sprite;
+
 Color bgcolor(130, 80, 100);
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
@@ -26,9 +24,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	time = 0.0f;
 	elapsed_time = 0.0f;
 
-	font.load("data/bitmap-font-white.tga"); //load bitmap-font image
-	minifont.load("data/mini-font-white-4x6.tga"); //load bitmap-font image
-	sprite.load("data/spritesheet.tga"); //example to load an sprite
+	//font.loadTGA("data/bitmap-font-white.tga"); //load bitmap-font image
+	//minifont.loadTGA("data/mini-font-white-4x6.tga"); //load bitmap-font image
 
 	//enableAudio(); //enable this line if you plan to add audio to your application
 	//synth.playSample("data/coin.wav",1,true);
@@ -39,18 +36,22 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 void Game::render(void)
 {
 	//Create a new Image (or we could create a global one if we want to keep the previous frame)
-	Image framebuffer(160, 120); //do not change framebuffer size
+	//Image framebuffer(160, 120); //do not change framebuffer size
 
 	//add your code here to fill the framebuffer
 	//...
+
+	if (dynamic_cast<PlayStage*>(current_stage)) {
+		current_stage->render();
+	}
 
 	//some new useful functions
 		framebuffer.fill( bgcolor );								//fills the image with one color
 		//framebuffer.drawLine( 0, 0, 100,100, Color::RED );		//draws a line
 		//framebuffer.drawImage( sprite, 0, 0 );					//draws full image
-		framebuffer.drawImage( sprite, 0, 0, framebuffer.width, framebuffer.height );			//draws a scaled image
+		//framebuffer.drawImage( sprite, 0, 0, framebuffer.width, framebuffer.height );			//draws a scaled image
 		//framebuffer.drawImage( sprite, 0, 0, Area(0,0,14,18) );	//draws only a part of an image
-		framebuffer.drawText( "Hello World", 0, 0, font );				//draws some text using a bitmap font in an image (assuming every char is 7x9)
+		//framebuffer.drawText( "Hello World", 0, 0, font );				//draws some text using a bitmap font in an image (assuming every char is 7x9)
 		//framebuffer.drawText( toString(time), 1, 10, minifont,4,6);	//draws some text using a bitmap font in an image (assuming every char is 4x6)
 
 	//send image to screen
@@ -88,6 +89,24 @@ void Game::update(double seconds_elapsed)
 		bgcolor.set(0, 255, 0);
 	}
 }
+
+
+void Game::load_images() {
+	images.wall_image = new Image();
+	images.wall_image->load("data/wall.png");
+	images.player_image = new Image();
+	images.player_image->load("data/main.png");
+	images.ghost_image = new Image();
+	images.ghost_image->load("data/ghost.png");
+	images.block_image = new Image();
+	images.block_image->load("data/block.png");
+	images.door_image = new Image();
+	images.door_image->load("data/door.png");
+	images.empty_image = new Image();
+	images.empty_image->load("data/empty.png");
+}
+
+
 
 //Keyboard event handler (sync input)
 void Game::onKeyDown( SDL_KeyboardEvent event )

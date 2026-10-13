@@ -9,6 +9,8 @@
 #include "image.h"
 #include "utils.h"
 #include "synth.h"
+#include "stage.h"
+#include "world.h"
 
 class Game
 {
@@ -23,21 +25,43 @@ public:
 
 	//some globals
 	long frame;
-    float time;
-	float elapsed_time;
+    float time;//total time
+	float elapsed_time;//ms from previous frame
 	int fps;
 	bool must_exit;
 
 	//audio
 	Synth synth;
 
+
+	Stage* current_stage;
+	Stage *play_stage;
+
+	World* world;
+
+	struct{
+            Image* wall_image = nullptr;
+            Image* player_image = nullptr;
+            Image* ghost_image = nullptr;
+            Image* block_image = nullptr;
+            Image* door_image = nullptr;
+			Image* empty_image = nullptr;
+	} images;
+
+	Image framebuffer = Image(160, 120);
 	//ctor
 	Game( int window_width, int window_height, SDL_Window* window );
+
+	//my functions
+
+	void load_images();
+
 
 	//main functions
 	void render( void );
 	void update( double dt );
 
+	
 	void showFramebuffer(Image* img);
 
 	//events

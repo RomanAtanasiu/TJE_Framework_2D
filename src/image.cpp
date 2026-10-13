@@ -1,5 +1,6 @@
 #include "image.h"
 #include <algorithm>    // std::max, min, clamp
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 #include "utils.h"
