@@ -1,12 +1,13 @@
 #ifndef STAGE_H
 #define STAGE_H
 #include "world.h"
+#include "camera.h"
 
 class Stage {
     public:
         virtual void update(float dt) {};
         virtual void render() {};
-
+        bool go_to_next_stage = false;
 };
 
 
@@ -15,9 +16,10 @@ class PlayStage : public Stage {
 
         PlayStage();
 
-        bool go_to_next_stage = false;
-        
+        Camera camera;
+
         void update(float dt);
         void render();
+
 };
 #endif

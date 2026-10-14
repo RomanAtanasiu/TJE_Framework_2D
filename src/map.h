@@ -4,6 +4,8 @@
 #include "includes.h"
 #include "framework.h"
 #include "array"
+#include "sprite.h"
+#include "camera.h"
 enum sCellType : uint8 {
     START, DOOR, WALL, EMPTY, BLOCK
 };
@@ -25,8 +27,11 @@ public:
     sCell* data;
     Map() {}
     Map(int level);
-    void render_map();
+    void render_map(Camera cam);
     sCell& getCell(int x, int y) { return data[x + y * width]; }
     std::array<int, 2> getStartingPosition();
+    std::vector<sCell*> what_cells_are_colliding(Sprite sprite);
+    void decrease_block_level(sCell& cell);
+    void decrease_block_level(int x_cell, int y_cell);
 };
 #endif

@@ -46,6 +46,9 @@ public:
             Image* block_image = nullptr;
             Image* door_image = nullptr;
 			Image* empty_image = nullptr;
+			Image* block_big_damage_image = nullptr;  
+			Image* block_small_damage_image = nullptr;
+
 	} images;
 
 	Image framebuffer = Image(160, 120);

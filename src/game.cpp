@@ -32,7 +32,6 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//synth.osc1.amplitude = 0.5;
 	load_images();
 	world = new World();
-	world->main_character.player_sprite = new Sprite(images.player_image, Sprite::sSpriteType::PLAYER);
 
 	play_stage = new PlayStage();
 	current_stage = play_stage;
@@ -69,7 +68,9 @@ void Game::update(double seconds_elapsed)
 {
 	//Add here your update method
 	//...
-
+	if (dynamic_cast<PlayStage*>(current_stage)) {
+		current_stage->update(seconds_elapsed);
+	}
 	//Read the keyboard state, to see all the keycodes: https://wiki.libsdl.org/SDL_Keycode
 	if (Input::isKeyPressed(SDL_SCANCODE_UP)) //if key up
 	{
@@ -111,6 +112,10 @@ void Game::load_images() {
 	images.door_image->load("data/door.png");
 	images.empty_image = new Image();
 	images.empty_image->load("data/empty.png");
+	images.block_big_damage_image = new Image();
+	images.block_big_damage_image->load("data/block_2.png");
+	images.block_small_damage_image = new Image();
+	images.block_small_damage_image->load("data/block_1.png");
 }
 
 
