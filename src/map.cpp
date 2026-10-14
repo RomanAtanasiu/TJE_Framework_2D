@@ -13,8 +13,8 @@
 
 
 Map::Map(int level) {
-    width = WIDTH_LEVEL*(3*level/4);
-    height = HEIGHT_LEVEL*(3*level/4);
+    width = WIDTH_LEVEL*(3.0*level/4.0);
+    height = HEIGHT_LEVEL*(3.0*level/4.0);
     data = new sCell[width * height];
 
 

@@ -2,7 +2,7 @@
 #include "utils.h"
 #include "input.h"
 #include "image.h"
-
+#include "sprite.h"
 #include <cmath>
 
 Game* Game::instance = NULL;
@@ -30,6 +30,13 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//enableAudio(); //enable this line if you plan to add audio to your application
 	//synth.playSample("data/coin.wav",1,true);
 	//synth.osc1.amplitude = 0.5;
+	load_images();
+	world = new World();
+	world->main_character.player_sprite = new Sprite(images.player_image, Sprite::sSpriteType::PLAYER);
+
+	play_stage = new PlayStage();
+	current_stage = play_stage;
+
 }
 
 //what to do when the image has to be draw
@@ -41,9 +48,7 @@ void Game::render(void)
 	//add your code here to fill the framebuffer
 	//...
 
-	if (dynamic_cast<PlayStage*>(current_stage)) {
-		current_stage->render();
-	}
+
 
 	//some new useful functions
 		framebuffer.fill( bgcolor );								//fills the image with one color
@@ -53,7 +58,9 @@ void Game::render(void)
 		//framebuffer.drawImage( sprite, 0, 0, Area(0,0,14,18) );	//draws only a part of an image
 		//framebuffer.drawText( "Hello World", 0, 0, font );				//draws some text using a bitmap font in an image (assuming every char is 7x9)
 		//framebuffer.drawText( toString(time), 1, 10, minifont,4,6);	//draws some text using a bitmap font in an image (assuming every char is 4x6)
-
+	if (dynamic_cast<PlayStage*>(current_stage)) {
+		current_stage->render();
+	}
 	//send image to screen
 	showFramebuffer(&framebuffer);
 }

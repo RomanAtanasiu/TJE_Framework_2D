@@ -9,7 +9,7 @@
 class World {
     public:
         Map* map = nullptr;
-        int level = 0;
+        int level = 1;
         struct{
             Sprite* player_sprite = nullptr;
             
