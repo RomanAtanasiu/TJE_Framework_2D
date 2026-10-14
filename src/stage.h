@@ -15,6 +15,8 @@ class PlayStage : public Stage {
 
         PlayStage();
 
+        bool go_to_next_stage = false;
+        
         void update(float dt);
         void render();
 };

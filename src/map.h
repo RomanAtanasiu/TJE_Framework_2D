@@ -3,7 +3,7 @@
 
 #include "includes.h"
 #include "framework.h"
-
+#include "array"
 enum sCellType : uint8 {
     START, DOOR, WALL, EMPTY, BLOCK
 };
@@ -20,12 +20,13 @@ class Map {
 public:
     int width = 0;
     int height = 0;
-    int tile_width = 0;
-    int tile_height = 0;
+    int tile_width = 16;
+    int tile_height = 16;
     sCell* data;
     Map() {}
     Map(int level);
     void render_map();
     sCell& getCell(int x, int y) { return data[x + y * width]; }
+    std::array<int, 2> getStartingPosition();
 };
 #endif

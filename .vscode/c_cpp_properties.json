@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "linux-gcc-x64",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/build/libraries/sdl2/include",
+                "${workspaceFolder}/build/libraries/sdl2/include-config-debug/SDL2"
+            ],
+            "compilerPath": "/usr/bin/gcc"
+        }
+    ],
+    "version": 4,
+    "configurationProvider": "ms-vscode.cmake-tools"
+}

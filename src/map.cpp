@@ -7,8 +7,8 @@
 
 #include "game.h"
 
-#define WIDTH_LEVEL 50
-#define HEIGHT_LEVEL 50
+#define WIDTH_LEVEL 10
+#define HEIGHT_LEVEL 10
 
 
 
@@ -75,3 +75,21 @@ void Map::render_map()
         }
     }
 }
+
+std::array<int, 2> Map::getStartingPosition()
+{
+    for(int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            sCell& cell = getCell(i, j);
+            if (cell.type == sCellType::START) {
+                std::array<int, 2> position;
+                position[0] = i*tile_width; 
+                position[1] = j*tile_height;
+                return position;
+            }
+        }
+    }
+    return std::array<int, 2>{-1, -1};
+}
+
+
