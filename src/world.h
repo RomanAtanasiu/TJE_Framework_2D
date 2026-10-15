@@ -20,7 +20,7 @@ class World {
             float taladro_time = 0.5;
             float time_since_last_impact = 0.1;
 
-            float balls_velocity = 0.5;
+            float balls_velocity = 0.7;
 
 
         } main_character;
@@ -38,7 +38,7 @@ class World {
         void reasemble_balls();
 
         void add_ball();
-
+        void duplicate_balls();
 		void render_balls(Camera cam);
 
         float time_since_last_ghost = 6.0;

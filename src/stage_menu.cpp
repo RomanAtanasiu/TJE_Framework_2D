@@ -107,13 +107,14 @@ void UpgradeStage::update(float dt) {
 
         Game::instance->synth.playSample("data/sound/power_up.wav", 0.2);
         if (selected_option == TALADRO_SPEED ) {
-            Game::instance->world->main_character.taladro_time -= 0.1;
+            Game::instance->world->main_character.taladro_time -= 0.15;
+            if (Game::instance->world->main_character.taladro_time <= 0) Game::instance->world->main_character.taladro_time = 0;
         }
         if (selected_option == MORE_BALLS) {
-            Game::instance->world->add_ball();
+            Game::instance->world->duplicate_balls();
         }
         if (selected_option == BALLS_SPEED) {
-            Game::instance->world->main_character.balls_velocity+=0.25;
+            Game::instance->world->main_character.balls_velocity+=1.0;
 
         }
         Game::instance->current_stage = Game::instance->play_stage;
@@ -133,7 +134,7 @@ void UpgradeStage::render() {
     Image speed = (selected_option == BALLS_SPEED) ? Game::instance->minifont_black : Game::instance->minifont;
 
     Game::instance->framebuffer.drawText("Increase drill speed", 20, height_text* 1, taladro, 4, 6);
-    Game::instance->framebuffer.drawText("Add one destruction ball", 20, height_text * 2, more_balls, 4, 6);
+    Game::instance->framebuffer.drawText("Duplicate destruction balls", 20, height_text * 2, more_balls, 4, 6);
     Game::instance->framebuffer.drawText("Increase balls speed", 20, height_text * 3, speed, 4, 6);
 
 }

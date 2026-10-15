@@ -124,8 +124,7 @@ void PlayStage::update(float dt) {
 
 
 
-    if (Game::instance->world->time_since_last_ghost >= 15.0f / Game::instance->world->level) {
-        //todo set a random position for the ghost wihtout colliding with the player or other ghosts
+    if (Game::instance->world->time_since_last_ghost >= (20.0f - std::min(2.0*Game::instance->world->level,3.0))) {
         Game::instance->world->add_ghost();
         Game::instance->world->time_since_last_ghost = 0.0f;
     }

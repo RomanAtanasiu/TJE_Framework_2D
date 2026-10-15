@@ -20,6 +20,13 @@ Vector2 World::get_ball_position(Ball b)
     return ball_position;
 }
 
+void World::duplicate_balls() {
+    int size = balls_list.size();
+    for (int i = 0; i < size; i++){
+        add_ball();
+    }
+}
+
 void World::add_ball()
 {
     Ball ball;
@@ -132,22 +139,25 @@ void World::add_ghost() {
     int side = rand() % 4;
     int door_x, door_y;
 
-    if (side == 0) {
-        door_x = rand() % (map->width - 2) + 1;
-        door_y = 0;
-    }
-    if (side == 1) {
-        door_x = rand() % (map->width - 2) + 1;
-        door_y = map->height - 1;
-    }
-    if (side == 2) {
-        door_x = 0;
-        door_y = rand() % (map->height - 2) + 1;
-    }
-    if (side == 3) {
-        door_x = map->width - 1;
-        door_y = rand() % (map->height - 2) + 1;
-    }
+    do {
+        if (side == 0) {
+            door_x = rand() % (map->width - 2) + 1;
+            door_y = 0;
+        }
+        if (side == 1) {
+            door_x = rand() % (map->width - 2) + 1;
+            door_y = map->height - 1;
+        }
+        if (side == 2) {
+            door_x = 0;
+            door_y = rand() % (map->height - 2) + 1;
+        }
+        if (side == 3) {
+            door_x = map->width - 1;
+            door_y = rand() % (map->height - 2) + 1;
+        }
+    } while (Vector2(door_x * 16, door_y * 16).distance(Vector2(main_character.player_sprite->pos_x, main_character.player_sprite->pos_y)) < 5 * 16);
+
     add_ghost(door_x * 16, door_y * 16);
 }
 
