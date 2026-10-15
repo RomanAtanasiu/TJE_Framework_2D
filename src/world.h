@@ -17,10 +17,9 @@ class World {
         struct{
             Sprite* player_sprite = nullptr;
             
-            float taladro_time = 0.1;
+            float taladro_time = 0.5;
             float time_since_last_impact = 0.1;
 
-            int taladro_damage = 1;
             float balls_velocity = 0.5;
 
 
@@ -30,7 +29,7 @@ class World {
             float angle;
             sCell* last_cell_impacted = nullptr;
         };
-
+        float time_survived = 0;
 
         std::vector<Ball> balls_list = {};
         Vector2 get_ball_position(Ball b);

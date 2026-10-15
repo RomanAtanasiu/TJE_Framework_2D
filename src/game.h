@@ -11,6 +11,7 @@
 #include "synth.h"
 #include "stage.h"
 #include "world.h"
+#include "stage_menu.h"
 
 class Game
 {
@@ -35,8 +36,10 @@ public:
 
 
 	Stage* current_stage;
-	Stage *play_stage;
-
+	Stage* intro_stage;
+	Stage* play_stage;
+	Stage* upgrade_stage;
+	Stage* end_stage;
 	World* world;
 
 	struct{
@@ -48,9 +51,13 @@ public:
 			Image* empty_image = nullptr;
 			Image* block_big_damage_image = nullptr;  
 			Image* block_small_damage_image = nullptr;
-
+			Image* background = nullptr;
+			Image* death_screen = nullptr;
+			Image* mage_background = nullptr;
 	} images;
-
+	Image font;
+	Image minifont;
+	Image minifont_black;
 	Image framebuffer = Image(160, 120);
 	//ctor
 	Game( int window_width, int window_height, SDL_Window* window );

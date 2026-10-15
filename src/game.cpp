@@ -24,9 +24,9 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	time = 0.0f;
 	elapsed_time = 0.0f;
 
-	//font.loadTGA("data/bitmap-font-white.tga"); //load bitmap-font image
-	//minifont.loadTGA("data/mini-font-white-4x6.tga"); //load bitmap-font image
-
+	font.loadTGA("data/bitmap-font-white.tga"); //load bitmap-font image
+	minifont.loadTGA("data/mini-font-white-4x6.tga"); //load bitmap-font image
+	minifont_black.loadTGA("data/mini-font-black-4x6.tga");
 	//enableAudio(); //enable this line if you plan to add audio to your application
 	//synth.playSample("data/coin.wav",1,true);
 	//synth.osc1.amplitude = 0.5;
@@ -34,7 +34,10 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	world = new World();
 
 	play_stage = new PlayStage();
-	current_stage = play_stage;
+	intro_stage = new IntroStage();
+	upgrade_stage = new UpgradeStage();
+	end_stage = new EndStage();
+	current_stage = new IntroStage();
 
 }
 
@@ -57,9 +60,9 @@ void Game::render(void)
 		//framebuffer.drawImage( sprite, 0, 0, Area(0,0,14,18) );	//draws only a part of an image
 		//framebuffer.drawText( "Hello World", 0, 0, font );				//draws some text using a bitmap font in an image (assuming every char is 7x9)
 		//framebuffer.drawText( toString(time), 1, 10, minifont,4,6);	//draws some text using a bitmap font in an image (assuming every char is 4x6)
-	if (dynamic_cast<PlayStage*>(current_stage)) {
+	//if (dynamic_cast<PlayStage*>(current_stage)) {
 		current_stage->render();
-	}
+	//}
 	//send image to screen
 	showFramebuffer(&framebuffer);
 }
@@ -68,9 +71,14 @@ void Game::update(double seconds_elapsed)
 {
 	//Add here your update method
 	//...
-	if (dynamic_cast<PlayStage*>(current_stage)) {
+	/*if (dynamic_cast<IntroStage*>(current_stage)) {
 		current_stage->update(seconds_elapsed);
+		if (current_stage->go_to_next_stage) current_stage = play_stage;
 	}
+	else if (dynamic_cast<PlayStage*>(current_stage)) {
+		current_stage->update(seconds_elapsed);
+	}*/
+	current_stage->update(seconds_elapsed);
 	//Read the keyboard state, to see all the keycodes: https://wiki.libsdl.org/SDL_Keycode
 	if (Input::isKeyPressed(SDL_SCANCODE_UP)) //if key up
 	{
@@ -116,6 +124,12 @@ void Game::load_images() {
 	images.block_big_damage_image->load("data/block_2.png");
 	images.block_small_damage_image = new Image();
 	images.block_small_damage_image->load("data/block_1.png");
+	images.background = new Image();
+	images.background->load("data/creepy_dungeon.png");
+	images.death_screen = new Image();
+	images.death_screen->load("data/death.png");
+	images.mage_background = new Image();
+	images.mage_background->load("data/background_mage.png");
 }
 
 

@@ -13,7 +13,7 @@ PlayStage::PlayStage() {
 
 void PlayStage::update(float dt) {
 
-
+    Game::instance->world->time_survived += dt;
 //cheat codes for testing
     {
         time_last_button_clicked += dt;
@@ -59,6 +59,7 @@ void PlayStage::update(float dt) {
     for (auto cell : collided_cells) {
         if (cell->type == DOOR) {
             Game::instance->world->init_level();
+            Game::instance->current_stage = Game::instance->upgrade_stage;
             break;
         }
         else if (cell->type == BLOCK) {
@@ -104,7 +105,7 @@ void PlayStage::update(float dt) {
     //if player collides with ghost set go_to_next_stage to true
     for (auto& ghost : Game::instance->world->ghost_list) {
         if (Game::instance->world->main_character.player_sprite->is_colliding(&ghost)) {
-            go_to_next_stage = true;
+            Game::instance->current_stage = Game::instance->end_stage;
         }
     }
 
