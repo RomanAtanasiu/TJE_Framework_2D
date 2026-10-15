@@ -15,7 +15,7 @@ void IntroStage::update(float dt) {
 
     time_last_button_clicked += dt;
 
-    if (Input::isKeyPressed(SDL_SCANCODE_S) && rendering_tutorial) {
+    if (Input::isKeyPressed(SDL_SCANCODE_X) && rendering_tutorial) {
         rendering_tutorial = false;
         return;
     }
@@ -32,7 +32,7 @@ void IntroStage::update(float dt) {
         selected_option = static_cast<OptionSelect>((selected_option + 1) % 3);
         time_last_button_clicked = 0;
     }
-    if ((Input::isKeyPressed(SDL_SCANCODE_KP_ENTER) || Input::isKeyPressed(SDL_SCANCODE_A)) && time_last_button_clicked > 0.3) {
+    if ((Input::isKeyPressed(SDL_SCANCODE_KP_ENTER) || Input::isKeyPressed(SDL_SCANCODE_Z)) && time_last_button_clicked > 0.3) {
         time_last_button_clicked = 0;
 
         Game::instance->synth.playSample("data/sound/menu.wav", 0.2);
@@ -63,10 +63,10 @@ void IntroStage::render() {
 
         Game::instance->framebuffer.drawText("Move with your arrows", 10, 17 + 16*2 + 1 + 6 + 1 + 6 + 1, Game::instance->minifont,4,6);
 
-        Game::instance->framebuffer.drawText("Select ability with A to", 10, 17 + 16*2 + 1 + (6 + 1) * 4, Game::instance->minifont, 4, 6);
+        Game::instance->framebuffer.drawText("Select ability with Z to", 10, 17 + 16*2 + 1 + (6 + 1) * 4, Game::instance->minifont, 4, 6);
         Game::instance->framebuffer.drawText("improve your character and start game", 10, 17 + 16*2 + 1 + (6 + 1) * 5, Game::instance->minifont, 4, 6);
 
-        Game::instance->framebuffer.drawText("Exit tutorial with S", 10, 17 + 16*2 + 1 + (6 + 1) * 7, Game::instance->minifont, 4, 6);
+        Game::instance->framebuffer.drawText("Exit tutorial with X", 10, 17 + 16*2 + 1 + (6 + 1) * 7, Game::instance->minifont, 4, 6);
     }
     else {
 
@@ -102,7 +102,7 @@ void UpgradeStage::update(float dt) {
         selected_option = static_cast<UpgradeSelect>((selected_option + 1) % 3);
         time_last_button_clicked = 0;
     }
-    if ((Input::isKeyPressed(SDL_SCANCODE_KP_ENTER) || Input::isKeyPressed(SDL_SCANCODE_A)) && time_last_button_clicked > 0.3) {
+    if ((Input::isKeyPressed(SDL_SCANCODE_KP_ENTER) || Input::isKeyPressed(SDL_SCANCODE_Z)) && time_last_button_clicked > 0.3) {
         time_last_button_clicked = 0;
 
         Game::instance->synth.playSample("data/sound/power_up.wav", 0.2);
@@ -114,7 +114,7 @@ void UpgradeStage::update(float dt) {
             Game::instance->world->duplicate_balls();
         }
         if (selected_option == BALLS_SPEED) {
-            Game::instance->world->main_character.balls_velocity+=1.0;
+            Game::instance->world->main_character.balls_velocity+=0.5;
 
         }
         Game::instance->current_stage = Game::instance->play_stage;
@@ -140,10 +140,10 @@ void UpgradeStage::render() {
 }
 
 void EndStage::update(float dt) {
-    if (Input::isKeyPressed(SDL_SCANCODE_S)) Game::instance->must_exit = true;
+    if (Input::isKeyPressed(SDL_SCANCODE_X)) Game::instance->must_exit = true;
 
 
-    if (Input::isKeyPressed(SDL_SCANCODE_A)) {
+    if (Input::isKeyPressed(SDL_SCANCODE_Z)) {
         delete Game::instance->world;
         Game::instance->world = new World();
         Game::instance->current_stage = Game::instance->intro_stage;

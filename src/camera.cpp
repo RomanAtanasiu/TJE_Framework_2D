@@ -22,10 +22,3 @@ Vector2 Camera::world_to_camera(const Vector2& world_coords) const
     return Vector2(world_coords.x - position.x, world_coords.y - position.y);
 }
 
-bool Camera::is_visible(const Sprite& sprite) const
-{
-    return !(sprite.pos_x + sprite.width < position.x ||
-        sprite.pos_x > position.x + width ||
-        sprite.pos_y + sprite.height < position.y ||
-        sprite.pos_y > position.y + height);
-}

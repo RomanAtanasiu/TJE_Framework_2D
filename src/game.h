@@ -43,6 +43,7 @@ public:
 	Stage* end_stage;
 	World* world;
 
+
 	struct{
             Image* wall_image = nullptr;
             Image* player_image = nullptr;

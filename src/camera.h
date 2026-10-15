@@ -20,6 +20,5 @@ public:
 
     Vector2 world_to_camera(const Vector2& world_coords) const;
 
-    bool is_visible(const Sprite& sprite) const;
 };
 #endif

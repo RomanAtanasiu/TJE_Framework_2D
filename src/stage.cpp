@@ -19,16 +19,36 @@ void PlayStage::update(float dt) {
     {
         time_last_button_clicked += dt;
 
-        if (Input::isKeyPressed(SDL_SCANCODE_P) && time_last_button_clicked > 0.1) {
-            Game::instance->world->add_ball();
+        if (Input::isKeyPressed(SDL_SCANCODE_1) && time_last_button_clicked > 0.1) {
+            Game::instance->world->main_character.taladro_time -= 0.15;
+            if (Game::instance->world->main_character.taladro_time <= 0) Game::instance->world->main_character.taladro_time = 0;
+
+            time_last_button_clicked = 0;
+        }
+
+        if (Input::isKeyPressed(SDL_SCANCODE_2) && time_last_button_clicked > 0.1) {
+            Game::instance->world->main_character.balls_velocity += 0.5;
+
+            time_last_button_clicked = 0;
+        }
+
+        if (Input::isKeyPressed(SDL_SCANCODE_3) && time_last_button_clicked > 0.1) {
+            Game::instance->world->duplicate_balls();
 
             time_last_button_clicked = 0;
         }
 
         if (Input::isKeyPressed(SDL_SCANCODE_O) && time_last_button_clicked > 1.0) {
-            Game::instance->world->add_ghost();
+            Game::instance->world->main_character.invencible = !Game::instance->world->main_character.invencible;
 
             time_last_button_clicked = 0;
+        }
+
+        if (Input::isKeyPressed(SDL_SCANCODE_P) && time_last_button_clicked > 1.0) {
+            Game::instance->world->init_level();
+            Game::instance->current_stage = Game::instance->upgrade_stage;
+            Game::instance->synth.playSample("data/sound/door.wav", 0.2);
+
         }
 
     }
@@ -109,7 +129,7 @@ void PlayStage::update(float dt) {
 
     //if player collides with ghost set go_to_next_stage to true
     for (auto& ghost : Game::instance->world->ghost_list) {
-        if (Game::instance->world->main_character.player_sprite->is_colliding(&ghost)) {
+        if (Game::instance->world->main_character.player_sprite->is_colliding(&ghost) && not(Game::instance->world->main_character.invencible)) {
             if (Game::instance->music) {
                 Game::instance->music->stop();
                 Game::instance->music = nullptr;   

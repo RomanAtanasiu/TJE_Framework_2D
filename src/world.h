@@ -21,9 +21,10 @@ class World {
             float time_since_last_impact = 0.1;
 
             float balls_velocity = 0.7;
-
+            bool invencible = false;
 
         } main_character;
+
 
         struct Ball {
             float angle;

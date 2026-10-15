@@ -72,7 +72,7 @@ World::World() {
 
 void World::update_ghosts_position(Vector2 player_pos, float dt)
 {
-    float ghost_speed_normalized = ghost_speed * dt;
+    float ghost_speed_normalized = (ghost_speed + level/20.0) * dt;
     for (size_t i = 0; i < ghost_list.size(); i++) {
         Sprite& ghost = ghost_list[i];
         float dx = player_pos.x - ghost.pos_x;
@@ -187,12 +187,8 @@ void World::render_ghosts(Camera cam) {
     for(auto& ghost : ghost_list) {
 
 		if (!ghost.texture) continue; 
-
-        if (cam.is_visible(ghost)) {
             Vector2 screen_pos = cam.world_to_camera(Vector2(ghost.pos_x, ghost.pos_y));
             Game::instance->framebuffer.drawImage(*ghost.texture, screen_pos.x,screen_pos.y);
-        }
-
     }
 };
 
