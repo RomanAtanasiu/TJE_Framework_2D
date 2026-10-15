@@ -16,6 +16,25 @@ Vector2 World::get_ball_position(Ball b)
     return ball_position;
 }
 
+void World::add_ball()
+{
+    Ball ball;
+    balls_list.push_back(ball);
+    reasemble_balls();
+}
+
+void World::reasemble_balls()
+{
+	int num_balls = balls_list.size();
+    for (int i = 0; i < num_balls; i++) {
+		Ball& ball = balls_list[i];
+
+		ball.angle = ((2 * PI)*i) / (num_balls);
+
+        ball.last_cell_impacted = nullptr;
+    }
+}
+
 void World::render_balls(Camera cam)
 {
     for(auto& ball : balls_list) {

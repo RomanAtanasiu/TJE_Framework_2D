@@ -8,6 +8,8 @@ class Stage {
         virtual void update(float dt) {};
         virtual void render() {};
         bool go_to_next_stage = false;
+
+        float time_last_button_clicked = 0;
 };
 
 

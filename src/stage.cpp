@@ -14,6 +14,20 @@ PlayStage::PlayStage() {
 void PlayStage::update(float dt) {
 
 
+//cheat codes for testing
+    {
+        time_last_button_clicked += dt;
+
+        if (Input::isKeyPressed(SDL_SCANCODE_P) && time_last_button_clicked > 0.1) {
+            Game::instance->world->add_ball();
+
+            time_last_button_clicked = 0;
+        }
+
+    }
+
+
+
     Game::instance->world->main_character.time_since_last_impact -= dt;
     Game::instance->world->time_since_last_ghost += dt;
 
@@ -61,12 +75,21 @@ void PlayStage::update(float dt) {
     }
 
     
-    //update balls position
+    //update balls position //and get collisions
     for(World::Ball &ball: Game::instance->world->balls_list) {
 		ball.angle += Game::instance->world->main_character.balls_velocity * dt;
 		ball.angle += Game::instance->world->main_character.balls_velocity * dt;
 		if (ball.angle > 2.0*PI) ball.angle -= 2.0 * PI;
-		Game::instance->world->get_ball_position(ball);
+		
+        
+        Vector2 pos = Game::instance->world->get_ball_position(ball);
+        sCell& actual_cell = Game::instance->world->map->getCell(int(pos.x) / 16, int(pos.y)/16);
+        if (&actual_cell != ball.last_cell_impacted ) {
+            ball.last_cell_impacted = &actual_cell;
+            if (actual_cell.type == BLOCK) {
+                Game::instance->world->map->decrease_block_level(actual_cell);
+            }
+        }
 	}
     
 

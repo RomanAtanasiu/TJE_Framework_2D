@@ -34,6 +34,11 @@ class World {
         std::vector<Ball> balls_list = {};
         Vector2 get_ball_position(Ball b);
 
+        //only adding balls during changing levels
+        void reasemble_balls();
+
+        void add_ball();
+
 		void render_balls(Camera cam);
 
         float time_since_last_ghost = 0;
