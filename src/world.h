@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include <vector>
 #include "camera.h"
+//#include "tweeny.h"
 #define MAX_GHOSTS 100
 
 
@@ -41,13 +42,20 @@ class World {
 
 		void render_balls(Camera cam);
 
-        float time_since_last_ghost = 0;
+        float time_since_last_ghost = 6.0;
         std::vector<Sprite> ghost_list;
+        float ghost_speed = 0.5;
+        //std::vector<tweeny::tween<float, float>> ghost_tweens;
+
 
         World();
 
+        //void update_ghosts_position(Vector2 player_position, float dt);
+        void update_ghosts_position(Vector2 player_pos, float dt);
+        void add_ghost();
         void add_ghost(float x, float y);
-        void remove_ghosts() {ghost_list.clear();};
+        //void remove_ghosts() { ghost_list.clear(); ghost_tweens.clear(); };
+        void remove_ghosts() { ghost_list.clear();};
         void init_level();
         
         void render_ghosts(Camera cam);

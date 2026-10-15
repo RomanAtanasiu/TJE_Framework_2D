@@ -24,6 +24,12 @@ void PlayStage::update(float dt) {
             time_last_button_clicked = 0;
         }
 
+        if (Input::isKeyPressed(SDL_SCANCODE_O) && time_last_button_clicked > 1.0) {
+            Game::instance->world->add_ghost();
+
+            time_last_button_clicked = 0;
+        }
+
     }
 
 
@@ -74,7 +80,8 @@ void PlayStage::update(float dt) {
         }
     }
 
-    
+    Game::instance->world->update_ghosts_position(Vector2(Game::instance->world->main_character.player_sprite->pos_x, Game::instance->world->main_character.player_sprite->pos_y), dt);
+
     //update balls position //and get collisions
     for(World::Ball &ball: Game::instance->world->balls_list) {
 		ball.angle += Game::instance->world->main_character.balls_velocity * dt;
@@ -105,7 +112,7 @@ void PlayStage::update(float dt) {
 
     if (Game::instance->world->time_since_last_ghost >= 15.0f / Game::instance->world->level) {
         //todo set a random position for the ghost wihtout colliding with the player or other ghosts
-        Game::instance->world->add_ghost(50, 50);
+        Game::instance->world->add_ghost();
         Game::instance->world->time_since_last_ghost = 0.0f;
     }
     //can destroy blocks again
