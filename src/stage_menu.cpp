@@ -4,7 +4,7 @@
 #include "input.h"
 #include "stage_menu.h"
 #include <string>
-
+#include "synth.h"
 
 IntroStage::IntroStage()
 {
@@ -21,17 +21,25 @@ void IntroStage::update(float dt) {
     }
 
     if (Input::isKeyPressed(SDL_SCANCODE_UP) && time_last_button_clicked > 0.3 ) {
+
+        Game::instance->synth.playSample("data/sound/menu.wav", 0.2);
         selected_option = static_cast<OptionSelect>((selected_option + 2 )%3);
         time_last_button_clicked = 0;
     }
     if (Input::isKeyPressed(SDL_SCANCODE_DOWN) && time_last_button_clicked > 0.3) {
+
+        Game::instance->synth.playSample("data/sound/menu.wav", 0.2);
         selected_option = static_cast<OptionSelect>((selected_option + 1) % 3);
         time_last_button_clicked = 0;
     }
     if ((Input::isKeyPressed(SDL_SCANCODE_KP_ENTER) || Input::isKeyPressed(SDL_SCANCODE_A)) && time_last_button_clicked > 0.3) {
         time_last_button_clicked = 0;
+
+        Game::instance->synth.playSample("data/sound/menu.wav", 0.2);
         if (selected_option == START) {
             Game::instance->current_stage = Game::instance->play_stage;
+            if (!Game::instance->music)   
+                Game::instance->music = Game::instance->synth.playSample("data/sound/music.wav", 0.5, true);
         }
         if (selected_option == TUTORIAL) {
             rendering_tutorial = true;
@@ -87,6 +95,8 @@ void UpgradeStage::update(float dt) {
     if (Input::isKeyPressed(SDL_SCANCODE_UP) && time_last_button_clicked > 0.3) {
         selected_option = static_cast<UpgradeSelect>((selected_option + 2) % 3);
         time_last_button_clicked = 0;
+
+        Game::instance->synth.playSample("data/sound/menu.wav", 0.2);
     }
     if (Input::isKeyPressed(SDL_SCANCODE_DOWN) && time_last_button_clicked > 0.3) {
         selected_option = static_cast<UpgradeSelect>((selected_option + 1) % 3);
@@ -95,6 +105,7 @@ void UpgradeStage::update(float dt) {
     if ((Input::isKeyPressed(SDL_SCANCODE_KP_ENTER) || Input::isKeyPressed(SDL_SCANCODE_A)) && time_last_button_clicked > 0.3) {
         time_last_button_clicked = 0;
 
+        Game::instance->synth.playSample("data/sound/power_up.wav", 0.2);
         if (selected_option == TALADRO_SPEED ) {
             Game::instance->world->main_character.taladro_time -= 0.1;
         }

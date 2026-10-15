@@ -8,6 +8,7 @@
 #define PI 3.14159265
 PlayStage::PlayStage() {
     camera = Camera();
+    
 }
 
 
@@ -60,6 +61,10 @@ void PlayStage::update(float dt) {
         if (cell->type == DOOR) {
             Game::instance->world->init_level();
             Game::instance->current_stage = Game::instance->upgrade_stage;
+
+
+            Game::instance->synth.playSample("data/sound/door.wav", 0.2);
+
             break;
         }
         else if (cell->type == BLOCK) {
@@ -105,7 +110,15 @@ void PlayStage::update(float dt) {
     //if player collides with ghost set go_to_next_stage to true
     for (auto& ghost : Game::instance->world->ghost_list) {
         if (Game::instance->world->main_character.player_sprite->is_colliding(&ghost)) {
+            if (Game::instance->music) {
+                Game::instance->music->stop();
+                Game::instance->music = nullptr;   
+            }
+
+            Game::instance->synth.playSample("data/sound/death_ghost.wav", 0.2);
+
             Game::instance->current_stage = Game::instance->end_stage;
+            break;
         }
     }
 

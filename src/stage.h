@@ -2,7 +2,7 @@
 #define STAGE_H
 #include "world.h"
 #include "camera.h"
-
+#include "synth.h"
 class Stage {
     public:
         virtual void update(float dt) {};
@@ -17,7 +17,6 @@ class PlayStage : public Stage {
         PlayStage();
 
         Camera camera;
-
         void update(float dt);
         void render();
 

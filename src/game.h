@@ -33,6 +33,7 @@ public:
 
 	//audio
 	Synth synth;
+	Synth::SamplePlayback* music = nullptr;
 
 
 	Stage* current_stage;
@@ -59,6 +60,9 @@ public:
 	Image minifont;
 	Image minifont_black;
 	Image framebuffer = Image(160, 120);
+
+	
+
 	//ctor
 	Game( int window_width, int window_height, SDL_Window* window );
 

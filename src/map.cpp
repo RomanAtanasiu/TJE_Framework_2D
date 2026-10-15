@@ -6,6 +6,11 @@
 #include <cmath>
 
 #include "game.h"
+#include <vector>
+#include <algorithm>
+#include <functional>
+
+#define NOISE_SCALE 0.15f 
 
 #define WIDTH_LEVEL 10
 #define HEIGHT_LEVEL 10
@@ -13,40 +18,66 @@
 
 
 Map::Map(int level) {
-    width = WIDTH_LEVEL*(3.0*level/4.0);
-    height = HEIGHT_LEVEL*(3.0*level/4.0);
+    width = WIDTH_LEVEL+(level*4);
+    height = HEIGHT_LEVEL+(level*4);
     data = new sCell[width * height];
 
 
-    for(int i = 0; i < width; i++){
-        for(int j = 0; j < height; j++){
-            sCell& cell = getCell(i,j);
-            if(i == 0 || j == 0 || i == width-1 || j == height-1){
+    // progreso: 0 en los niveles 1-3, sube hasta 1 en el nivel 10
+    float t = std::min(1.0f, std::max(0.0f, (level - 3) / 7.0f));
+
+    // fracción de celdas interiores de cada tipo (el resto son bloques enteros)
+    float empty_fraction = 0.50f - 0.42f * t;   // 50% -> 8%  vacío
+    float small_fraction = 0.18f - 0.14f * t;   // 18% -> 4%  bloques de 1 golpe
+    float big_fraction = 0.15f - 0.07f * t;   // 15% -> 8%  bloques de 2 golpes
+
+    // 1) ruido de todas las celdas interiores
+    float offset_x = rand() % 1000;   // desplaza el ruido para que cada partida sea distinta
+    float offset_y = rand() % 1000;
+    std::vector<float> noise_values(width * height, 0.0f);
+    std::vector<float> sorted_noise;
+    for (int i = 1; i < width - 1; i++) {
+        for (int j = 1; j < height - 1; j++) {
+            float noise = stb_perlin_noise3(offset_x + i * NOISE_SCALE, offset_y + j * NOISE_SCALE, level, 0, 0, 0);
+            noise = (noise + 1.0f) / 2.0f;
+            noise_values[i + j * width] = noise;
+            sorted_noise.push_back(noise);
+        }
+    }
+
+    // 2) umbrales a partir de la distribución real del ruido (ordenado de mayor a menor)
+    std::sort(sorted_noise.begin(), sorted_noise.end(), std::greater<float>());
+    int n = sorted_noise.size();
+    float empty_threshold = sorted_noise[std::min(n - 1, (int)(empty_fraction * n))];
+    float small_damage_threshold = sorted_noise[std::min(n - 1, (int)((empty_fraction + small_fraction) * n))];
+    float big_damage_threshold = sorted_noise[std::min(n - 1, (int)((empty_fraction + small_fraction + big_fraction) * n))];
+
+    // 3) tipo de cada celda
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            sCell& cell = getCell(i, j);
+            if (i == 0 || j == 0 || i == width - 1 || j == height - 1) {
                 cell.type = sCellType::WALL;
                 cell.block = sBlockType::FULL;
-
-
-            } else {
-                float noise = stb_perlin_noise3(i, j, level, 0, 0, 0);
-                noise = (noise + 1.0) / 2.0;
-
-                float increasing_difficulty = 0.3;
-                if(noise > 1.0-(exp(-increasing_difficulty*level))){
+            }
+            else {
+                float noise = noise_values[i + j * width];
+                if (noise > empty_threshold) {
                     cell.type = sCellType::EMPTY;
                     cell.block = sBlockType::NONE;
-                }  
-                else if(noise > 1.0-(exp(-increasing_difficulty*(level + sBlockType::SMALL_DAMAGE/ (float) (sBlockType::FULL+1))))){
+                }
+                else if (noise > small_damage_threshold) {
                     cell.type = sCellType::BLOCK;
                     cell.block = sBlockType::SMALL_DAMAGE;
                 }
-                 else if(noise > 1.0-(exp(-increasing_difficulty*(level + sBlockType::BIG_DAMAGE/ (float) (sBlockType::FULL+1))))){
+                else if (noise > big_damage_threshold) {
                     cell.type = sCellType::BLOCK;
                     cell.block = sBlockType::BIG_DAMAGE;
-                } else {
+                }
+                else {
                     cell.type = sCellType::BLOCK;
                     cell.block = sBlockType::FULL;
                 }
-
             }
         }
     }
@@ -58,7 +89,7 @@ Map::Map(int level) {
     getCell(start_x, start_y).block = sBlockType::NONE;
 
     int side = rand() % 4;
-    int door_x, door_y;
+    int door_x = 1, door_y = 0;
 
     if (side == 0) {
         door_x = rand() % (width - 2) + 1;

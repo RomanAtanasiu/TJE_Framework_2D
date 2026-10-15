@@ -27,7 +27,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	font.loadTGA("data/bitmap-font-white.tga"); //load bitmap-font image
 	minifont.loadTGA("data/mini-font-white-4x6.tga"); //load bitmap-font image
 	minifont_black.loadTGA("data/mini-font-black-4x6.tga");
-	//enableAudio(); //enable this line if you plan to add audio to your application
+	enableAudio(); //enable this line if you plan to add audio to your application
 	//synth.playSample("data/coin.wav",1,true);
 	//synth.osc1.amplitude = 0.5;
 	load_images();
